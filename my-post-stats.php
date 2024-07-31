@@ -80,24 +80,29 @@ class Dashboard_Widget {
 					<thead>
 						<th colspan="2"><?php esc_html_e( 'Posts per', 'my-post-stats' ); ?></th>
 						<th colspan="2"><?php esc_html_e( 'Most Active', 'my-post-stats' ); ?></th>
+						<th colspan="2"><?php esc_html_e( 'All time', 'my-post-stats' ); ?></th>
 					</thead>
 					<tr>
 						<td><?php esc_html_e( 'Day' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
-						<td><span id="posts_per_day">0</span></td>
+						<td><span id="my_posts_posts_per_day">0</span></td>
 						<td><?php esc_html_e( 'Day' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
-						<td><span id="most_active_day"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
+						<td><span id="my_posts_most_active_day"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
+						<td><?php esc_html_e( 'First Post', 'my-post-stats' ); ?></td>
+						<td><span id="my_posts_first_post"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
 					</tr>
 					<tr>
 						<td><?php esc_html_e( 'Week' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
-						<td><span id="posts_per_week">0</span></td>
+						<td><span id="my_posts_posts_per_week">0</span></td>
 						<td><?php esc_html_e( 'Hour' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
-						<td><span id="most_active_hour"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
+						<td><span id="my_posts_most_active_hour"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
+						<td><?php esc_html_e( 'Total', 'my-post-stats' ); ?></td>
+						<td><span id="my_posts_total_posts"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
 					</tr>
 					<tr>
 						<td><?php esc_html_e( 'Month' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
-						<td><span id="posts_per_month">0</span></td>
+						<td><span id="my_posts_posts_per_month">0</span></td>
 						<td><?php esc_html_e( 'Year' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
-						<td><span id="most_active_year"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
+						<td><span id="my_posts_most_active_year"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
 					</tr>
 				</table>
 			</details>
@@ -220,7 +225,7 @@ class Dashboard_Widget {
 		$most_active_year = array_keys( $posts_per_year, max( $posts_per_year ) )[0] . ' (' . max( $posts_per_year ) . ' posts)';
 
 		$total_posts = array_sum( $counts );
-		$days = count( $counts );
+		$days = $post_date->diff( new DateTime( 'now', new DateTimeZone( $timezone ) ) )->days;
 		$weeks = ceil( $days / 7 );
 		$months = ceil( $days / 30 );
 
@@ -228,10 +233,11 @@ class Dashboard_Widget {
 			'daily'            => $days ? round( $total_posts / $days, 2 ) : 0,
 			'weekly'           => $weeks ? round( $total_posts / $weeks, 2 ) : 0,
 			'monthly'          => $months ? round( $total_posts / $months, 2 ) : 0,
-			'total_posts'      => $total_posts,
 			'most_active_day'  => $most_active_day_display,
 			'most_active_hour' => $most_active_hour,
 			'most_active_year' => $most_active_year,
+			'first_post'       => $post_date->format( 'M j, Y' ),
+			'total_posts'      => $total_posts,
 		);
 
 		wp_send_json_success(

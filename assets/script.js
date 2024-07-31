@@ -66,12 +66,14 @@ if ( document.getElementById('postsChart') ) {
 					postsChart.appendChild(bar);
 				}
 
-				document.getElementById('posts_per_day').innerText = stats.daily;
-				document.getElementById('posts_per_week').innerText = stats.weekly;
-				document.getElementById('posts_per_month').innerText = stats.monthly;
-				document.getElementById('most_active_day').innerText = stats.most_active_day;
-				document.getElementById('most_active_hour').innerText = stats.most_active_hour;
-				document.getElementById('most_active_year').innerText = stats.most_active_year;
+				document.getElementById('my_posts_posts_per_day').innerText = stats.daily;
+				document.getElementById('my_posts_posts_per_week').innerText = stats.weekly;
+				document.getElementById('my_posts_posts_per_month').innerText = stats.monthly;
+				document.getElementById('my_posts_most_active_day').innerText = stats.most_active_day;
+				document.getElementById('my_posts_most_active_hour').innerText = stats.most_active_hour;
+				document.getElementById('my_posts_most_active_year').innerText = stats.most_active_year;
+				document.getElementById('my_posts_first_post').innerText = stats.first_post;
+				document.getElementById('my_posts_total_posts').innerText = stats.total_posts;
 
 				renderPostsByMonth(data.data.postsByMonth);
 				renderHourlyDistribution(data.data.hourlyCounts);
