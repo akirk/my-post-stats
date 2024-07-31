@@ -11,7 +11,9 @@
  *
  * @package My_Post_Stats
  */
+
 namespace My_Post_Stats;
+
 use DateTime;
 use DateTimeZone;
 
@@ -141,8 +143,21 @@ class Dashboard_Widget {
 
 		$last_month = false;
 		foreach ( $posts as $post ) {
-			$post_date = new DateTime( $post->post_date_gmt, new DateTimeZone( 'UTC' ) );
-			$post_date->setTimezone( new DateTimeZone( $timezone ) );
+			$post_date = false;
+			try {
+				if ( substr( $post->post_date_gmt, 0, 4 ) > 1970 ) {
+					$post_date = new DateTime( $post->post_date_gmt, new DateTimeZone( 'UTC' ) );
+					$post_date->setTimezone( new DateTimeZone( $timezone ) );
+				} elseif ( substr( $post->post_date, 0, 4 ) > 1970 ) {
+					$post_date = new DateTime( $post->post_date, new DateTimeZone( $timezone ) );
+				}
+			} catch ( Exception $e ) {
+				continue;
+			}
+
+			if ( ! $post_date ) {
+				continue;
+			}
 			if ( $last_month ) {
 				while ( $last_month > $post_date ) {
 					$last_month = $last_month->modify( '-1 month' );
