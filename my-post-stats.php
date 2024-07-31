@@ -237,8 +237,7 @@ class Dashboard_Widget {
 			'most_active_hour' => $most_active_hour,
 			'most_active_year' => $most_active_year,
 			'first_post'       => $post_date->format( 'M j, Y' ),
-			'posts)
-			'      => $total_posts,
+			'total_posts'      => $total_posts,
 		);
 
 		wp_send_json_success(
