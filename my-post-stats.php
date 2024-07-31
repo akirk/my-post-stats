@@ -215,7 +215,7 @@ class Dashboard_Widget {
 
 		$most_active_day = array_keys( $weekday_counts, max( $weekday_counts ) )[0];
 		global $wp_locale;
-		$most_active_day_display = $wp_locale->get_weekday( $most_active_day )0] . ' (' . max( $weekday_counts ) . ')';;
+		$most_active_day_display = $wp_locale->get_weekday( $most_active_day ) . ' (' . max( $weekday_counts ) . ')';
 		$most_active_hour = array_keys( $hourly_counts, max( $hourly_counts ) )[0];
 		$most_active_hour = $most_active_hour . ':00 - ' . ( $most_active_hour + 1 ) . ':00';
 		$posts_per_year = array();
