@@ -215,14 +215,14 @@ class Dashboard_Widget {
 
 		$most_active_day = array_keys( $weekday_counts, max( $weekday_counts ) )[0];
 		global $wp_locale;
-		$most_active_day_display = $wp_locale->get_weekday( $most_active_day );
+		$most_active_day_display = $wp_locale->get_weekday( $most_active_day )0] . ' (' . max( $weekday_counts ) . ')';;
 		$most_active_hour = array_keys( $hourly_counts, max( $hourly_counts ) )[0];
 		$most_active_hour = $most_active_hour . ':00 - ' . ( $most_active_hour + 1 ) . ':00';
 		$posts_per_year = array();
 		foreach ( $posts_by_month as $year => $months ) {
 			$posts_per_year[ $year ] = array_sum( array_map( 'count', $months ) );
 		}
-		$most_active_year = array_keys( $posts_per_year, max( $posts_per_year ) )[0] . ' (' . max( $posts_per_year ) . ' posts)';
+		$most_active_year = array_keys( $posts_per_year, max( $posts_per_year ) )[0] . ' (' . max( $posts_per_year ) . ')';
 
 		$total_posts = array_sum( $counts );
 		$days = $post_date->diff( new DateTime( 'now', new DateTimeZone( $timezone ) ) )->days;
@@ -237,7 +237,8 @@ class Dashboard_Widget {
 			'most_active_hour' => $most_active_hour,
 			'most_active_year' => $most_active_year,
 			'first_post'       => $post_date->format( 'M j, Y' ),
-			'total_posts'      => $total_posts,
+			'posts)
+			'      => $total_posts,
 		);
 
 		wp_send_json_success(
