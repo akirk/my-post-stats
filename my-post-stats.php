@@ -42,7 +42,6 @@ class Dashboard_Widget {
 		// If the color is rather dark, use a light text color:
 		$foreground_color = ( 0.2126 * hexdec( substr( $background_color, 1, 2 ) ) + 0.7152 * hexdec( substr( $background_color, 3, 2 ) ) + 0.0722 * hexdec( substr( $background_color, 5, 2 ) ) ) > 128 ? '#000' : '#fff';
 
-
 		wp_localize_script(
 			'my-post-stats-js',
 			'myPostStats',

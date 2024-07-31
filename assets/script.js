@@ -43,15 +43,14 @@ if ( document.getElementById('postsChart') ) {
 					const bar = document.createElement('div');
 					bar.className = 'post-bar';
 					bar.style.backgroundColor = myPostStats.background_color;
-					bar.style.color = myPostStats.foreground_color;
-					const barWidth = Math.min(430, (count / maxCount * 400)) + 'px';
+					const barWidth = Math.min(430, (count / maxCount * 400));
 					if ( ++c < 14 ) {
 						bar.style.width = 0;
 						setTimeout(function() {
-							bar.style.width = barWidth;
+							bar.style.width = barWidth + 'px';
 						}, 1);
 					} else {
-						bar.style.width = barWidth;
+						bar.style.width = barWidth + 'px';
 					}
 					bar.title = `${label}: ${count} posts`;
 					bar.dataset.targetId = 'post-stats-' + dateString;
@@ -60,7 +59,9 @@ if ( document.getElementById('postsChart') ) {
 					monthLabel.textContent = label;
 					monthLabel.className = 'month-label';
 					monthLabel.dataset.targetId = 'post-stats-' + dateString;
-					monthLabel.style.color = myPostStats.foreground_color;
+					if ( barWidth > 20 ) {
+						monthLabel.style.color = myPostStats.foreground_color;
+					}
 
 					bar.appendChild(monthLabel);
 					postsChart.appendChild(bar);
