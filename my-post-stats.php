@@ -1,10 +1,19 @@
 <?php
 /**
- * Plugin Name: My Post Stats Dashboard Widget
- * Description: A dashboard widget that displays a simple bar chart of posts and some numeric stats. Lists posts grouped by year and month.
+ * Plugin Name: My Post Stats
+ * Description: A WordPress dashboard widget to display your own post stats.
  * Version: 1.0.0
  * Author: Alex Kirk
+ * Requires PHP: 7.0
+ *
+ * License: GPL2
+ * Text Domain: my-post-stats
+ *
+ * @package My_Post_Stats
  */
+namespace My_Post_Stats;
+use DateTime;
+use DateTimeZone;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -12,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'MY_POST_STATS_VERSION', '1.0.0' );
 
-class MyPostStatsDashboardWidget {
+class Dashboard_Widget {
 	public function __construct() {
 		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
 		add_action( 'wp_ajax_get_my_post_stats', array( $this, 'get_my_post_stats' ) );
@@ -23,13 +32,12 @@ class MyPostStatsDashboardWidget {
 		wp_enqueue_style( 'my-post-stats-css', plugin_dir_url( __FILE__ ) . 'assets/style.css', array(), MY_POST_STATS_VERSION );
 		wp_enqueue_script( 'my-post-stats-js', plugin_dir_url( __FILE__ ) . 'assets/script.js', array(), MY_POST_STATS_VERSION, true );
 
-		// Localize script with nonce
 		wp_localize_script(
 			'my-post-stats-js',
 			'myPostStats',
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'my_post_stats_nonce' ), // Create nonce
+				'nonce'    => wp_create_nonce( 'my_post_stats_nonce' ),
 			)
 		);
 	}
@@ -61,21 +69,21 @@ class MyPostStatsDashboardWidget {
 						<th colspan="2"><?php esc_html_e( 'Most Active', 'my-post-stats' ); ?></th>
 					</thead>
 					<tr>
-						<td><?php esc_html_e( 'Day:', 'my-post-stats' ); ?></td>
+						<td><?php esc_html_e( 'Day' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
 						<td><span id="posts_per_day">0</span></td>
-						<td><?php esc_html_e( 'Day:', 'my-post-stats' ); ?></td>
+						<td><?php esc_html_e( 'Day' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
 						<td><span id="most_active_day"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Week:', 'my-post-stats' ); ?></td>
+						<td><?php esc_html_e( 'Week' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
 						<td><span id="posts_per_week">0</span></td>
-						<td><?php esc_html_e( 'Hour:', 'my-post-stats' ); ?></td>
+						<td><?php esc_html_e( 'Hour' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
 						<td><span id="most_active_hour"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
 					</tr>
 					<tr>
-						<td><?php esc_html_e( 'Month:', 'my-post-stats' ); ?></td>
+						<td><?php esc_html_e( 'Month' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
 						<td><span id="posts_per_month">0</span></td>
-						<td><?php esc_html_e( 'Year:', 'my-post-stats' ); ?></td>
+						<td><?php esc_html_e( 'Year' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
 						<td><span id="most_active_year"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
 					</tr>
 				</table>
@@ -90,26 +98,26 @@ class MyPostStatsDashboardWidget {
 
 	public function get_my_post_stats() {
 		check_ajax_referer( 'my_post_stats_nonce', 'nonce' );
-		// Gather input data
-		$author_id = isset( $_POST['author'] ) && $_POST['author'] === 'all' ? '' : intval( $_POST['author'] );
-		$post_formats = ! isset( $_POST['post_formats'] ) || $_POST['post_formats'] === 'all' ? false : $_POST['post_formats'];
 
-		// Prepare arguments for WP_Query
+		$author_id = isset( $_POST['author'] ) && 'all' === $_POST['author'] ? '' : intval( $_POST['author'] );
+		$post_formats = isset( $_POST['post_formats'] ) ? sanitize_text_field( wp_unslash( $_POST['post_formats'] ) ) : 'all';
+		$timezone = isset( $_POST['timezone'] ) ? sanitize_text_field( wp_unslash( $_POST['timezone'] ) ) : 'UTC';
+
 		$args = array(
 			'post_type'      => 'post',
 			'post_status'    => 'publish',
-			'posts_per_page' => -1, // Get all posts
+			'posts_per_page' => -1,
 		);
 
 		if ( 'standard' === $post_formats ) {
-			$args['tax_query'] = array(
+			$args['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				array(
 					'taxonomy' => 'post_format',
 					'operator' => 'NOT EXISTS',
 				),
 			);
-		} elseif ( $post_formats ) {
-			$args['tax_query'] = array(
+		} elseif ( $post_formats && in_array( $post_formats, get_post_format_slugs() ) ) {
+			$args['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				array(
 					'taxonomy' => 'post_format',
 					'field'    => 'slug',
@@ -124,44 +132,39 @@ class MyPostStatsDashboardWidget {
 		$args['orderby'] = 'post_date';
 		$args['order'] = 'DESC';
 
-		// Fetch posts
 		$posts = get_posts( $args );
 
-		// Initialize statistics containers
 		$counts = array();
-		$hourly_counts = array_fill( 0, 24, 0 ); // Initialize hourly counts with zero
+		$hourly_counts = array_fill( 0, 24, 0 );
 		$posts_by_month = array();
 		$weekday_counts = array_fill( 1, 7, 0 );
 
 		$last_month = false;
 		foreach ( $posts as $post ) {
-			$post_date = strtotime( $post->post_date );
+			$post_date = new DateTime( $post->post_date_gmt, new DateTimeZone( 'UTC' ) );
+			$post_date->setTimezone( new DateTimeZone( $timezone ) );
 			if ( $last_month ) {
 				while ( $last_month > $post_date ) {
-					$last_month = strtotime( '-1 month', $last_month );
-					$counts[ date( 'Y-m', $last_month ) ] = 0;
+					$last_month = $last_month->modify( '-1 month' );
+					$counts[ $last_month->format( 'Y-m' ) ] = 0;
 				}
 			}
 			$last_month = $post_date;
-			$post_month = date( 'Y-m', $post_date );
-			$day_of_week = date( 'w', $post_date );
-			$hour_of_day = date( 'G', $post_date );
+			$post_month = $post_date->format( 'Y-m' );
+			$day_of_week = $post_date->format( 'w' );
+			$hour_of_day = $post_date->format( 'G' );
 
-			// Count the posts per month
 			if ( ! isset( $counts[ $post_month ] ) ) {
 				$counts[ $post_month ] = 0;
 			}
 			++$counts[ $post_month ];
 
-			// Update hourly counts
 			++$hourly_counts[ $hour_of_day ];
 
-			// Update weekday counts
 			++$weekday_counts[ $day_of_week ];
 
-			// Group posts by year and month
-			$year = date( 'Y', $post_date );
-			$month = date( 'm - F', $post_date );
+			$year = $post_date->format( 'Y' );
+			$month = $post_date->format( 'm - F' );
 			if ( ! isset( $posts_by_month[ $year ] ) ) {
 				$posts_by_month[ $year ] = array();
 			}
@@ -175,14 +178,13 @@ class MyPostStatsDashboardWidget {
 			$posts_by_month[ $year ][ $month ][] = array(
 				'link'   => get_permalink( $post->ID ),
 				'title'  => $title,
-				'prefix' => date( 'jS H:i ', $post_date ),
+				'prefix' => $post_date->format( 'jS H:i ' ),
 			);
 		}
 
-		// Calculate statistics
 		$most_active_day = array_keys( $weekday_counts, max( $weekday_counts ) )[0];
-		$days_of_week = array( 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' );
-		$most_active_day_display = isset( $days_of_week[ $most_active_day ] ) ? $days_of_week[ $most_active_day ] : 'N/A';
+		global $wp_locale;
+		$most_active_day_display = $wp_locale->get_weekday( $most_active_day );
 		$most_active_hour = array_keys( $hourly_counts, max( $hourly_counts ) )[0];
 		$most_active_hour = $most_active_hour . ':00 - ' . ( $most_active_hour + 1 ) . ':00';
 		$posts_per_year = array();
@@ -217,5 +219,5 @@ class MyPostStatsDashboardWidget {
 	}
 }
 
-// Instantiate the class
-new MyPostStatsDashboardWidget();
+
+new Dashboard_Widget();

@@ -21,7 +21,8 @@ function fetchPostsData() {
 		action: 'get_my_post_stats',
 		author: document.getElementById('toggleAuthors').value,
 		post_formats: document.getElementById('includePostFormats').value,
-		 nonce: myPostStats.nonce // Include nonce here
+		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+		nonce: myPostStats.nonce
 	 }, function(data) {
 		if (data.success) {
 			const counts = data.data.counts;
