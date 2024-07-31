@@ -15,8 +15,7 @@
 }
 
 #myPostStatsWidget #postsChart .post-bar {
-	height: 20px;
-	background-color: rgba(75, 192, 192, 0.7);
+	height: 18px;
 	margin: 2px 0;
 	position: relative;
 	cursor: pointer;
@@ -43,7 +42,6 @@
 }
 
 #myPostStatsWidget #hourlyDistribution .hour-bar {
-	background-color: rgba(75, 192, 192, 0.7);
 	margin: 2px;
 	text-align: center;
 	flex-grow: 1;

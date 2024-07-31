@@ -42,8 +42,10 @@ if ( document.getElementById('postsChart') ) {
 
 					const bar = document.createElement('div');
 					bar.className = 'post-bar';
+					bar.style.backgroundColor = myPostStats.background_color;
+					bar.style.color = myPostStats.foreground_color;
 					const barWidth = Math.min(430, (count / maxCount * 400)) + 'px';
-					if (++c < 14) {
+					if ( ++c < 14 ) {
 						bar.style.width = 0;
 						setTimeout(function() {
 							bar.style.width = barWidth;
@@ -58,6 +60,7 @@ if ( document.getElementById('postsChart') ) {
 					monthLabel.textContent = label;
 					monthLabel.className = 'month-label';
 					monthLabel.dataset.targetId = 'post-stats-' + dateString;
+					monthLabel.style.color = myPostStats.foreground_color;
 
 					bar.appendChild(monthLabel);
 					postsChart.appendChild(bar);
@@ -122,8 +125,10 @@ if ( document.getElementById('postsChart') ) {
 			const count = hourlyCounts[hour] || 0;
 
 			const bar = document.createElement('div');
-			bar.style.height = 15 + (count / maxHourlyCount * 100) + 'px'; // Scale the bar height
+			bar.style.height = 17 + (count / maxHourlyCount * 100) + 'px'; // Scale the bar height
 			bar.className = 'hour-bar';
+			bar.style.backgroundColor = myPostStats.background_color;
+			bar.style.color = myPostStats.foreground_color;
 			if (!count) bar.classList.add('empty');
 			bar.title = `${hour}:00: ${count} posts`;
 			bar.textContent = hour;
