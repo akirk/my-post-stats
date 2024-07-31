@@ -35,7 +35,9 @@ class Dashboard_Widget {
 		wp_enqueue_script( 'my-post-stats-js', plugin_dir_url( __FILE__ ) . 'assets/script.js', array(), MY_POST_STATS_VERSION, true );
 
 		global $_wp_admin_css_colors;
-		$background_color = $_wp_admin_css_colors[get_user_option( 'admin_color' )]->colors[1];
+		$admin_colors = $_wp_admin_css_colors[get_user_option( 'admin_color' )]->colors;
+		array_pop( $admin_colors );
+		$background_color = array_pop( $admin_colors );
 
 		// If the color is rather dark, use a light text color:
 		$foreground_color = ( 0.2126 * hexdec( substr( $background_color, 1, 2 ) ) + 0.7152 * hexdec( substr( $background_color, 3, 2 ) ) + 0.0722 * hexdec( substr( $background_color, 5, 2 ) ) ) > 128 ? '#000' : '#fff';
