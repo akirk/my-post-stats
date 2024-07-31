@@ -1,0 +1,10 @@
+assets	export-ignore
+.git*	export-ignore
+phpcs.xml.dist	export-ignore
+.gitignore	export-ignore
+.vscode	export-ignore
+composer.json	export-ignore
+composer.lock	export-ignore
+img	export-ignore
+tests	export-ignore
+vendor	export-ignore
