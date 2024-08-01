@@ -31,8 +31,8 @@ class Dashboard_Widget {
 	}
 
 	public function enqueue_assets() {
-		wp_enqueue_style( 'my-post-stats-css', plugin_dir_url( __FILE__ ) . 'assets/style.css', array(), MY_POST_STATS_VERSION );
-		wp_enqueue_script( 'my-post-stats-js', plugin_dir_url( __FILE__ ) . 'assets/script.js', array(), MY_POST_STATS_VERSION, true );
+		wp_enqueue_style( 'my-post-stats-css', plugin_dir_url( __FILE__ ) . 'style.css', array(), MY_POST_STATS_VERSION );
+		wp_enqueue_script( 'my-post-stats-js', plugin_dir_url( __FILE__ ) . 'script.js', array(), MY_POST_STATS_VERSION, true );
 
 		global $_wp_admin_css_colors;
 		$admin_colors = $_wp_admin_css_colors[get_user_option( 'admin_color' )]->colors;
