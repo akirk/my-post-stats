@@ -19,6 +19,7 @@
 	margin: 2px 0;
 	position: relative;
 	cursor: pointer;
+	border-radius: 3px;
 }
 
 /* only transition the first 12 items */

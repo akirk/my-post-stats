@@ -43,6 +43,7 @@ if ( document.getElementById('postsChart') ) {
 					const bar = document.createElement('div');
 					bar.className = 'post-bar';
 					bar.style.backgroundColor = myPostStats.background_color;
+					bar.style.borderBottom = '2px solid ' + myPostStats.accent_color;
 					const barWidth = Math.min(430, (count / maxCount * 400));
 					if ( ++c < 14 ) {
 						bar.style.width = 0;
@@ -135,6 +136,7 @@ if ( document.getElementById('postsChart') ) {
 			if (!count) bar.classList.add('empty');
 			bar.title = `${hour}:00: ${count} posts`;
 			bar.textContent = hour;
+			bar.style.borderBottom = '2px solid ' + myPostStats.accent_color;
 
 			hourlyGraph.appendChild(bar);
 		}

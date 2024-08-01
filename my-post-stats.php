@@ -36,7 +36,7 @@ class Dashboard_Widget {
 
 		global $_wp_admin_css_colors;
 		$admin_colors = $_wp_admin_css_colors[get_user_option( 'admin_color' )]->colors;
-		array_pop( $admin_colors );
+		$accent_color = array_pop( $admin_colors );
 		$background_color = array_pop( $admin_colors );
 
 		// If the color is rather dark, use a light text color:
@@ -46,10 +46,11 @@ class Dashboard_Widget {
 			'my-post-stats-js',
 			'myPostStats',
 			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'my_post_stats_nonce' ),
+				'ajax_url'         => admin_url( 'admin-ajax.php' ),
+				'nonce'            => wp_create_nonce( 'my_post_stats_nonce' ),
 				'background_color' => $background_color,
 				'foreground_color' => $foreground_color,
+				'accent_color'     => $accent_color,
 			)
 		);
 	}
