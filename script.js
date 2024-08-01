@@ -72,8 +72,11 @@ if ( document.getElementById('postsChart') ) {
 				document.getElementById('my_posts_posts_per_week').innerText = stats.weekly;
 				document.getElementById('my_posts_posts_per_month').innerText = stats.monthly;
 				document.getElementById('my_posts_most_active_day').innerText = stats.most_active_day;
+				document.getElementById('my_posts_most_active_day').title = stats.most_active_day_title;
 				document.getElementById('my_posts_most_active_hour').innerText = stats.most_active_hour;
+				document.getElementById('my_posts_most_active_hour').title = stats.most_active_hour_title;
 				document.getElementById('my_posts_most_active_year').innerText = stats.most_active_year;
+				document.getElementById('my_posts_most_active_year').title = stats.most_active_year_title;
 				document.getElementById('my_posts_first_post').innerText = stats.first_post;
 				document.getElementById('my_posts_total_posts').innerText = stats.total_posts;
 
@@ -134,7 +137,7 @@ if ( document.getElementById('postsChart') ) {
 			bar.style.backgroundColor = myPostStats.background_color;
 			bar.style.color = myPostStats.foreground_color;
 			if (!count) bar.classList.add('empty');
-			bar.title = `${hour}:00: ${count} posts`;
+			bar.title = `${hour}:00-${hour + 1}:00 ${count} posts`;
 			bar.textContent = hour;
 			bar.style.borderBottom = '2px solid ' + myPostStats.accent_color;
 

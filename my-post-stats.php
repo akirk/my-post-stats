@@ -103,6 +103,7 @@ class Dashboard_Widget {
 						<td><span id="my_posts_posts_per_month">0</span></td>
 						<td><?php esc_html_e( 'Year' ); /* phpcs:ignore WordPress.WP.I18n.MissingArgDomain */ ?></td>
 						<td><span id="my_posts_most_active_year"><?php esc_html_e( 'N/A', 'my-post-stats' ); ?></span></td>
+						<td colspan="2"></td>
 					</tr>
 				</table>
 			</details>
@@ -215,14 +216,19 @@ class Dashboard_Widget {
 
 		$most_active_day = array_keys( $weekday_counts, max( $weekday_counts ) )[0];
 		global $wp_locale;
-		$most_active_day_display = $wp_locale->get_weekday( $most_active_day ) . ' (' . max( $weekday_counts ) . ')';
+		$most_active_day_display = $wp_locale->get_weekday( $most_active_day );
+		$most_active_day_title = sprintf( _n( '%d post', '%d posts', max( $weekday_counts ), 'my-post-stats' ), max( $weekday_counts ) );
+
 		$most_active_hour = array_keys( $hourly_counts, max( $hourly_counts ) )[0];
 		$most_active_hour = $most_active_hour . ':00 - ' . ( $most_active_hour + 1 ) . ':00';
+		$most_active_hour_title = sprintf( _n( '%d post', '%d posts', max( $hourly_counts ), 'my-post-stats' ), max( $hourly_counts ) );
+
 		$posts_per_year = array();
 		foreach ( $posts_by_month as $year => $months ) {
 			$posts_per_year[ $year ] = array_sum( array_map( 'count', $months ) );
 		}
-		$most_active_year = array_keys( $posts_per_year, max( $posts_per_year ) )[0] . ' (' . max( $posts_per_year ) . ')';
+		$most_active_year = array_keys( $posts_per_year, max( $posts_per_year ) )[0];
+		$most_active_year_title = sprintf( _n( '%d post', '%d posts', max( $posts_per_year ), 'my-post-stats' ), max( $posts_per_year ) );
 
 		$total_posts = array_sum( $counts );
 		$days = $post_date->diff( new DateTime( 'now', new DateTimeZone( $timezone ) ) )->days;
@@ -234,8 +240,11 @@ class Dashboard_Widget {
 			'weekly'           => $weeks ? round( $total_posts / $weeks, 2 ) : 0,
 			'monthly'          => $months ? round( $total_posts / $months, 2 ) : 0,
 			'most_active_day'  => $most_active_day_display,
+			'most_active_day_title'  => $most_active_day_title,
 			'most_active_hour' => $most_active_hour,
+			'most_active_hour_title' => $most_active_hour_title,
 			'most_active_year' => $most_active_year,
+			'most_active_year_title' => $most_active_year_title,
 			'first_post'       => $post_date->format( 'M j, Y' ),
 			'total_posts'      => $total_posts,
 		);

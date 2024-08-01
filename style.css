@@ -59,9 +59,24 @@
 	color: #000;
 }
 
-#myPostStatsWidget #myPostStatsSummary p {
-	margin: 0;
-	margin-left: 10px;
+#myPostStatsWidget #myPostStatsSummary table {
+	border-collapse: collapse;
+	margin-bottom: .5em;
+}
+#myPostStatsWidget #myPostStatsSummary thead tr {
+	background: none !important;
+}
+
+#myPostStatsWidget #myPostStatsSummary tr:nth-child(2n+1) {
+	background-color: #f6f7f7;
+}
+
+#myPostStatsWidget #myPostStatsSummary tr td {
+	padding-top: .5em;
+	padding-bottom: .5em;
+}
+#myPostStatsWidget #myPostStatsSummary tr td:first-child {
+	padding-left: .5em;
 }
 
 #myPostStatsWidget > details > summary {
