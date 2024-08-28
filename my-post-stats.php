@@ -12,7 +12,7 @@
  * @package My_Post_Stats
  */
 
-namespace My_Post_Stats;
+namespace akirk\My_Post_Stats;
 
 use DateTime;
 use DateTimeZone;
