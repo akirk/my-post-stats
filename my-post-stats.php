@@ -25,7 +25,7 @@ define( 'MY_POST_STATS_VERSION', '1.0.0' );
 
 class Dashboard_Widget {
 	public function __construct() {
-		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widget' ) );
+		add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widget' ), 15 );
 		add_action( 'wp_ajax_get_my_post_stats', array( $this, 'get_my_post_stats' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 	}
@@ -56,7 +56,7 @@ class Dashboard_Widget {
 	}
 
 	public function add_dashboard_widget() {
-		wp_add_dashboard_widget( 'myPostStatsWidget', 'My Post Stats', array( $this, 'dashboard_widget_html' ) );
+		wp_add_dashboard_widget( 'myPostStatsWidget', 'My Post Stats', array( $this, 'dashboard_widget_html' ), null, null, 'column3' );
 	}
 
 	public function dashboard_widget_html() {
