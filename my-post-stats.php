@@ -156,7 +156,7 @@ class Dashboard_Widget {
 		$counts = array();
 		$hourly_counts = array_fill( 0, 24, 0 );
 		$posts_by_month = array();
-		$weekday_counts = array_fill( 1, 7, 0 );
+		$weekday_counts = array_fill( 0, 7, 0 );
 
 		$last_month = false;
 		foreach ( $posts as $post ) {

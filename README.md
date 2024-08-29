@@ -9,9 +9,10 @@
 
 A WordPress dashboard widget to display your own post stats.
 
-## Screenshot
+## Screenshots
 
-![my-post-stats-widget](https://github.com/user-attachments/assets/5da4f913-00f6-472a-a86b-72c178467e18)
-
+1. The dashboard widget
+2. You can modify the authors or the post types to display
+3. It displays your posts over the years in a tree view
 
 
