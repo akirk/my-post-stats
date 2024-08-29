@@ -2,7 +2,7 @@
 /**
  * Plugin Name: My Post Stats
  * Description: A WordPress dashboard widget to display your own post stats.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Alex Kirk
  * Requires PHP: 7.0
  *
