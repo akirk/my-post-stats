@@ -1,0 +1,24 @@
+{
+	"landingPage": "/wp-admin/?welcome=0",
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginZipFile": {
+				"resource": "wordpress.org/plugins",
+				"slug": "my-post-stats"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once 'wordpress/wp-load.php'; $posts = [ 'P1DT10H00M' => 'Understanding WordPress Hooks', 'P3DT14H30M' => 'Custom Post Types in WordPress', 'P2WT09H15M' => 'The WordPress REST API: A Comprehensive Guide', 'P1MT16H45M' => 'Building Custom Themes in WordPress', 'P5DT08H00M' => 'WordPress Shortcodes: Tips and Tricks', 'P10DT11H30M' => 'Optimizing WordPress Performance', 'P2WT15H00M' => 'Using WP_Query Like a Pro', 'P1WT12H00M' => 'Creating a WordPress Plugin from Scratch', 'P1MT17H00M' => 'Debugging WordPress: Tools and Techniques', 'P2DT13H15M' => 'Securing Your WordPress Site', 'P3WT11H00M' => 'Using Advanced Custom Fields in WordPress', 'P1DT10H30M' => 'Understanding WordPress User Roles', 'P4DT14H45M' => 'REST API Authentication in WordPress', 'P7DT09H30M' => 'Creating Gutenberg Blocks: A Step-by-Step Guide', 'P2MT16H00M' => 'WordPress Multisite Explained', 'P2WT12H30M' => 'Best Practices for WordPress Development', 'P1WT08H15M' => 'Using Elementor for Page Building', 'P1DT17H15M' => 'Deploying Your WordPress Site to Production', 'P5DT11H45M' => 'Local Development with WordPress', 'P10DT13H00M' => 'Content Strategy for WordPress Blogs', 'P1MT10H05M' => 'Creating Secure WordPress Forms' ];  $date = new DateTime(); foreach ($posts as $period => $title) wp_insert_post(array( 'post_title' => $title, 'post_author' => 1, 'post_status' => 'publish', 'post_date' => $date->sub(new DateInterval($period))->format('Y-m-d H:i:s')));"
+		}
+	]
+}
