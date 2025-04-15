@@ -3,7 +3,7 @@
 - Contributors: akirk
 - Tags: apps
 - Requires at least: 5.0
-- Tested up to: 6.7
+- Tested up to: 6.8
 - License: GPL-2.0-or-later
 - Stable tag: 1.0.1
 
