@@ -4,6 +4,7 @@
  * Description: A WordPress dashboard widget to display your own post stats.
  * Version: 1.0.1
  * Author: Alex Kirk
+ * Author URI: https://alex.kirk.at/
  * Requires PHP: 7.0
  *
  * License: GPL2
